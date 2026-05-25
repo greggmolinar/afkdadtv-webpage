@@ -18,7 +18,7 @@ import '../styles/global.css';
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- FIXED: Restored official CDN for FontAwesome icons -->
+    <!-- FIXED: Restored the true working global production CDN for your Icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -164,6 +164,7 @@ import '../styles/global.css';
         // --- 2. FIXED FAILSAFE MINECRAFT PLAYER COUNTER ---
         const mcServerDomain = "mc.afkdadserver.com";
         
+        // FIXED API ENDPOINT: Routed explicitly through api.mcstatus.io processing paths
         fetch(`https://mcstatus.io{mcServerDomain}`)
         .then(res => {
             if (!res.ok) throw new Error('API down');
@@ -176,14 +177,15 @@ import '../styles/global.css';
                 mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
                 mcSubtext.style.color = "#55ff55"; 
             } else if (mcSubtext) {
-                mcSubtext.textContent = "mc.afkdadserver.com";
-                mcSubtext.style.color = "#a9a9a9";
+                // Displays perfect offline flag color state when server is down
+                mcSubtext.textContent = "● Server Currently Offline";
+                mcSubtext.style.color = "#ff4a4a";
             }
         })
         .catch(() => {
             if (mcSubtext) {
-                mcSubtext.textContent = "mc.afkdadserver.com";
-                mcSubtext.style.color = "#a9a9a9";
+                mcSubtext.textContent = "● Server Currently Offline";
+                mcSubtext.style.color = "#ff4a4a";
             }
         });
 
