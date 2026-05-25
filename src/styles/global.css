@@ -15,26 +15,56 @@
     --accent-glow: rgba(145, 70, 255, 0.4);
 }
 
-body {
-    background-color: var(--bg-color);
-    color: var(--text-main);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+/* Core Layout Alignment Fixes */
+html, body {
+    width: 100%;
     min-height: 100vh;
-    padding: 20px;
+    margin: 0;
+    padding: 0;
+    background-color: #0b0c10; /* Match your bg-color variable */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center;     /* Centers horizontally */
+    padding: 40px 20px;
+    box-sizing: border-box;
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
     width: 100%;
     max-width: 550px;
     background: linear-gradient(145deg, #151b24, #1f2833);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 40px 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(145, 70, 255, 0.4);
+    box-sizing: border-box;
     text-align: center;
 }
+
+/* Force elements inside container to occupy full vertical stack width */
+.profile-header, 
+.about-section, 
+.links-section,
+footer {
+    width: 100%;
+}
+
+/* Footer Reset */
+footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
 
 /* Header/Logo Style */
 .profile-header h1 {
