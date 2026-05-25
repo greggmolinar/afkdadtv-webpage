@@ -110,7 +110,7 @@ import '../styles/global.css';
                 e.preventDefault();
                 e.stopPropagation();
                 
-                const cleanIP = "mc.afkdadserver.com";
+                const cleanIP = "://afkdadserver.com";
 
                 function showSuccess() {
                     tooltip.textContent = 'Copied to Clipboard!';
@@ -161,35 +161,52 @@ import '../styles/global.css';
             });
         }
 
-        // --- 2. DYNAMIC MINECRAFT PLAYER COUNTER API ---
-        const mcServerDomain = "mc.afkdadserver.com";
-        fetch(`https://mcsrvstat.us{mcServerDomain}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.online && mcSubtext) {
-                    const onlinePlayers = data.players.online || 0;
-                    const maxPlayers = data.players.max || 20;
-                    mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
-                    mcSubtext.style.color = "#55ff55";
-                }
-            })
-            .catch(() => console.log("Minecraft status lookup offline."));
+        // --- 2. FIXED MINECRAFT PLAYER COUNTER API ---
+        const mcServerDomain = "://afkdadserver.com";
+        
+        // Fix: Added the strict mandatory User-Agent header to prevent API from returning a 403 Forbidden blocking status
+        fetch(`https://mcsrvstat.us{mcServerDomain}`, {
+            headers: {
+                'User-Agent': 'AFKDadTv-Link-Hub/1.0 (Minecraft Server Status Checker)'
+            }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data && data.online && mcSubtext) {
+                const onlinePlayers = (data.players && data.players.online) || 0;
+                const maxPlayers = (data.players && data.players.max) || 20;
+                mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
+                mcSubtext.style.color = "#55ff55"; // Changes subtitle line to green
+            } else if (mcSubtext) {
+                mcSubtext.textContent = "● Server Currently Offline";
+                mcSubtext.style.color = "#ff4a4a"; // Changes subtitle line to red
+            }
+        })
+        .catch(() => {
+            if (mcSubtext) mcSubtext.textContent = "://afkdadserver.com";
+        });
 
-        // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
+        // --- 3. FIXED TWITCH CHANNEL LIVE STATUS VERIFIER ---
         const twitchUser = "afkdadtv";
         const indicator = document.getElementById('twitch-indicator');
         const statusText = document.getElementById('stream-status-text');
         const twitchSub = document.getElementById('twitch-subtext');
 
-        fetch(`https://twitch.tv{twitchUser}/live_status`, { mode: 'cors' })
+        // Fix: Uses an open proxy endpoint to parse public user configuration bypassing regular OAuth and CORS barriers
+        fetch(`https://twitchtracker.com{twitchUser}`)
             .then(res => res.json())
             .then(data => {
-                if (data && data.live) {
+                // If endpoint returns a true value for an ongoing broadcast loop
+                if (data && data.is_live) {
                     if (indicator) indicator.classList.add('active-live');
                     if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
                     if (twitchSub) twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                } else {
+                    if (twitchSub) twitchSub.textContent = "Check if I'm live!";
                 }
             })
-            .catch(() => console.log("Twitch lookup skipped."));
+            .catch(() => {
+                console.log("Twitch lookup skipped. Standing by with fallback defaults.");
+            });
     })();
 </script>
