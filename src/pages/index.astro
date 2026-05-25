@@ -77,32 +77,67 @@ import '../styles/global.css';
 
         if (copyBtn && tooltip) {
             copyBtn.addEventListener('click', function(e) {
-                // Prevent any default form or link behavior
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Hardcoded clean URL string to guarantee no HTML code is copied
-                const cleanIP = "mc.afkdadserver.com";
-                
-                // Force copy command to clipboard
-                navigator.clipboard.writeText(cleanIP).then(function() {
-                    // Update overlay text to show success prompt
+                const cleanIP = "://afkdadtvserver.com";
+
+                // Function to handle the UI feedback transition
+                function showSuccess() {
                     tooltip.textContent = 'Copied to Clipboard!';
                     copyBtn.classList.add('copied');
-                    
-                    // Reset back to original hover message layout after 2 seconds
                     setTimeout(function() {
-                        tooltip.textContent = 'Link copied to clipboard';
+                        tooltip.textContent = 'Click to Copy URL';
                         copyBtn.classList.remove('copied');
                     }, 2000);
-                }).catch(function(err) {
-                    console.error('Failed to copy text: ', err);
-                    tooltip.textContent = 'Failed to copy!';
-                });
+                }
+
+                // Apple/Safari Preferred Clipboard Pattern
+                if (navigator.clipboard && window.ClipboardItem) {
+                    const item = new ClipboardItem({
+                        "text/plain": Promise.resolve(cleanIP)
+                    });
+                    navigator.clipboard.write([item]).then(function() {
+                        showSuccess();
+                    }).catch(function(err) {
+                        // Regular fallback if strict security rejects it
+                        fallbackCopy(cleanIP);
+                    });
+                } else {
+                    fallbackCopy(cleanIP);
+                }
+
+                // Inline visual fallback for non-secure environments
+                function fallbackCopy(text) {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    // iOS safari workaround: don't throw it completely offscreen
+                    textArea.style.position = 'absolute';
+                    textArea.style.opacity = '0';
+                    textArea.style.fontSize = '16px'; // Prevents iOS zoom on focus
+                    
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    textArea.setSelectionRange(0, 99999); // Force selection on mobile safari
+                    
+                    try {
+                        const successful = document.execCommand('copy');
+                        if (successful) {
+                            showSuccess();
+                        } else {
+                            tooltip.textContent = 'Tap to select text';
+                        }
+                    } catch (err) {
+                        tooltip.textContent = 'Not supported!';
+                    }
+                    document.body.removeChild(textArea);
+                }
             });
         }
     })();
 </script>
+
 
         </section>
 
