@@ -1,4 +1,6 @@
-/* Base Reset & Variables */
+/* ==========================================================================
+   1. BASE RESET & GLOBAL LAYOUT VARIABLES
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
@@ -15,13 +17,12 @@
     --accent-glow: rgba(145, 70, 255, 0.4);
 }
 
-/* Core Layout Alignment Fixes */
 html, body {
     width: 100%;
     min-height: 100vh;
     margin: 0;
     padding: 0;
-    background-color: #0b0c10; /* Match your bg-color variable */
+    background-color: var(--bg-color);
 }
 
 body {
@@ -33,6 +34,9 @@ body {
     box-sizing: border-box;
 }
 
+/* ==========================================================================
+   2. MAIN SITE CONTENT CONTAINER
+   ========================================================================== */
 .container {
     display: flex;
     flex-direction: column;
@@ -42,31 +46,23 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 40px 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px rgba(145, 70, 255, 0.4);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
     box-sizing: border-box;
     text-align: center;
 }
 
-/* Force elements inside container to occupy full vertical stack width */
+/* Force layout blocks to break lines cleanly and occupy full vertical width */
 .profile-header, 
 .about-section, 
 .links-section,
 footer {
     width: 100%;
+    clear: both;
 }
 
-/* Footer Reset */
-footer {
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-    font-size: 0.8rem;
-    opacity: 0.5;
-}
-
-
-/* Header/Logo Style */
+/* ==========================================================================
+   3. PROFILE HEADER & AVATAR SYSTEM 
+   ========================================================================== */
 .profile-header h1 {
     color: var(--text-bright);
     font-size: 2.2rem;
@@ -93,7 +89,41 @@ footer {
     letter-spacing: 2px;
 }
 
-/* About Section */
+/* Avatar Live-Indicator Dot Context */
+.logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.live-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: transparent; /* Changed to transparent so it is hidden when offline */
+    border: 3px solid transparent;   /* Hidden by default */
+    border-radius: 50%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Active Pulsing Live-Alert State */
+.live-dot.active-live {
+    background-color: #ff4a4a !important; /* Vibrant Live Red */
+    border-color: #151b24 !important;    /* Isolates dot layout boundary from avatar */
+    box-shadow: 0 0 10px #ff4a4a, 0 0 20px #ff4a4a;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 74, 74, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0); }
+}
+
+/* ==========================================================================
+   4. ABOUT INFORMATION SECTION
+   ========================================================================== */
 .about-section {
     margin: 30px 0;
     padding: 20px;
@@ -110,11 +140,14 @@ footer {
 }
 
 .about-section p {
+    color: #ffffff; /* Crisp Solid White */
     font-size: 0.95rem;
     line-height: 1.6;
 }
 
-/* Social Buttons */
+/* ==========================================================================
+   5. INTERACTIVE BUTTON NAVIGATION CARDS
+   ========================================================================== */
 .links-section {
     display: flex;
     flex-direction: column;
@@ -141,10 +174,34 @@ footer {
     text-align: left;
 }
 
-/* Specific Social Brand Colors on Hover */
+/* Subtext Column Configurations */
+.btn-text-wrapper, .text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.live-subtext, .minecraft-card .sub-text {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #a9a9a9;
+    margin-top: 2px;
+    text-transform: none;
+    letter-spacing: 0px;
+}
+
+/* Hover Brand Modifications */
 .twitch:hover {
     background-color: #6441a5;
     box-shadow: 0 0 15px rgba(100, 65, 165, 0.6);
+    transform: translateY(-2px);
+}
+
+.discord:hover {
+    background-color: #5865F2; /* Discord Blurple */
+    box-shadow: 0 0 15px rgba(88, 101, 242, 0.6);
     transform: translateY(-2px);
 }
 
@@ -166,15 +223,11 @@ footer {
     transform: translateY(-2px);
 }
 
-/* Footer */
-footer {
-    margin-top: 40px;
-    font-size: 0.8rem;
-    opacity: 0.5;
-}
-/* Minecraft Button Specific Styles */
+/* ==========================================================================
+   6. MINECRAFT INTERACTIVE COPY COMPONENT
+   ========================================================================== */
 .minecraft-card {
-    position: relative; /* Crucial for positioning the hover overlay */
+    position: relative;
     background-color: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.1);
     cursor: pointer;
@@ -182,7 +235,7 @@ footer {
     text-align: left;
     display: flex;
     align-items: center;
-    overflow: hidden; /* Keeps the overlay contained inside the card borders */
+    overflow: hidden;
 }
 
 .btn-content {
@@ -194,14 +247,7 @@ footer {
 .minecraft-card i {
     font-size: 1.4rem;
     width: 35px;
-    color: #55ff55; /* Classic Minecraft Green */
-}
-
-.text-group {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    line-height: 1.2;
+    color: #55ff55; /* Minecraft Green Icon */
 }
 
 .minecraft-card .main-text {
@@ -210,23 +256,14 @@ footer {
     color: #ffffff;
 }
 
-.minecraft-card .sub-text {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #a9a9a9;
-    margin-top: 2px;
-    text-transform: none;
-    letter-spacing: 0px;
-}
-
-/* Hover Overlay Styles */
+/* Tooltip Overlay */
 .hover-tooltip {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #3c8527; /* Minecraft Grass Block Green */
+    background-color: #3c8527; /* Grass Block Green Overlay */
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -234,115 +271,28 @@ footer {
     font-weight: 700;
     font-size: 1.1rem;
     opacity: 0;
-    pointer-events: none; /* Allows click events to pass straight to the button */
+    pointer-events: none;
     transition: opacity 0.2s ease, background-color 0.2s ease;
 }
 
-/* Show overlay message on hover */
 .minecraft-card:hover .hover-tooltip {
     opacity: 1;
 }
 
-/* Active / Success State Color Modifications */
 .minecraft-card.copied .hover-tooltip {
     background-color: #2e661e !important;
 }
-/* Layout Alignment Fixes */
-.container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 550px;
-    box-sizing: border-box;
-}
 
-/* Force sections to break lines and stack perfectly */
-.profile-header, 
-.about-section, 
-.links-section {
-    width: 100%;
-    clear: both;
-}
-
-/* Force footer to the bottom and span the full width */
+/* ==========================================================================
+   7. SITE FOOTER SETTINGS
+   ========================================================================== */
 footer {
     width: 100%;
     margin-top: 40px;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.05); /* Clean divider line */
     text-align: center;
-    clear: both;
     font-size: 0.8rem;
-    opacity: 0.5;
-}
-/* Update About Section Paragraph to Solid White */
-.about-section p {
-    color: #ffffff; /* Solid White text */
-    font-size: 0.95rem;
-    line-height: 1.6;
-}
-
-/* Update Footer to Solid White with full clarity */
-footer {
-    width: 100%;
-    margin-top: 40px;
-    padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
-    text-align: center;
-    font-size: 0.8rem;
-    color: #ffffff; /* Changed from light gray to Solid White */
-    opacity: 0.9;   /* Bumped up opacity so it is highly visible */
-}
-/* Discord Brand Identity Styling */
-.discord:hover {
-    background-color: #5865F2; /* Discord Blurple */
-    box-shadow: 0 0 15px rgba(88, 101, 242, 0.6);
-    transform: translateY(-2px);
-}
-
-/* Flex Wrapper for secondary subtext rows on standard cards */
-.btn-text-wrapper {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
-    line-height: 1.2;
-}
-
-.live-subtext {
-    font-size: 0.75rem;
-    font-weight: 400;
-    color: #a9a9a9;
-    margin-top: 2px;
-}
-
-/* Avatar Live-Indicator Container System */
-.logo-container {
-    position: relative;
-    display: inline-block;
-}
-
-.live-dot {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    width: 18px;
-    height: 18px;
-    background-color: #a9a9a9; /* Default gray when offline */
-    border: 3px solid #151b24; /* Creates separation clean background gap border */
-    border-radius: 50%;
-    transition: background-color 0.3s ease;
-}
-
-/* Active Live Pulse State */
-.live-dot.active-live {
-    background-color: #ff4a4a; /* Vibrant live stream alert red */
-    box-shadow: 0 0 10px #ff4a4a, 0 0 20px #ff4a4a;
-    animation: pulseGlow 2s infinite;
-}
-
-@keyframes pulseGlow {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 74, 74, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0); }
+    color: #ffffff; 
+    opacity: 0.9;   /* Highly visible clarity */
 }
