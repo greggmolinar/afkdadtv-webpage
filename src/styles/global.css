@@ -293,3 +293,56 @@ footer {
     color: #ffffff; /* Changed from light gray to Solid White */
     opacity: 0.9;   /* Bumped up opacity so it is highly visible */
 }
+/* Discord Brand Identity Styling */
+.discord:hover {
+    background-color: #5865F2; /* Discord Blurple */
+    box-shadow: 0 0 15px rgba(88, 101, 242, 0.6);
+    transform: translateY(-2px);
+}
+
+/* Flex Wrapper for secondary subtext rows on standard cards */
+.btn-text-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.live-subtext {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #a9a9a9;
+    margin-top: 2px;
+}
+
+/* Avatar Live-Indicator Container System */
+.logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.live-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: #a9a9a9; /* Default gray when offline */
+    border: 3px solid #151b24; /* Creates separation clean background gap border */
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+/* Active Live Pulse State */
+.live-dot.active-live {
+    background-color: #ff4a4a; /* Vibrant live stream alert red */
+    box-shadow: 0 0 10px #ff4a4a, 0 0 20px #ff4a4a;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 74, 74, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0); }
+}
