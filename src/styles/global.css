@@ -275,3 +275,21 @@ footer {
     font-size: 0.8rem;
     opacity: 0.5;
 }
+/* Update About Section Paragraph to Solid White */
+.about-section p {
+    color: #ffffff; /* Solid White text */
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Update Footer to Solid White with full clarity */
+footer {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ffffff; /* Changed from light gray to Solid White */
+    opacity: 0.9;   /* Bumped up opacity so it is highly visible */
+}
