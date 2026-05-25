@@ -70,32 +70,38 @@ import '../styles/global.css';
         </div>
     </div>
 </button>
-<script>
-    const copyBtn = document.getElementById('copy-mc-btn');
-    const subtext = document.getElementById('btn-subtext');
+<script is:inline>
+    (function() {
+        const copyBtn = document.getElementById('copy-mc-btn');
+        const tooltip = document.getElementById('mc-tooltip');
 
-    if (copyBtn && subtext) {
-        copyBtn.addEventListener('click', () => {
-            // Get the IP from the data attribute
-            const ipAddress = copyBtn.getAttribute('data-ip') || '';
-            
-            // Copy to clipboard
-            navigator.clipboard.writeText(ipAddress).then(() => {
-                // Visual feedback success state
-                subtext.textContent = 'Copied to clipboard!';
-                copyBtn.classList.add('copied');
+        if (copyBtn && tooltip) {
+            copyBtn.addEventListener('click', function(e) {
+                // Prevent any default form or link behavior
+                e.preventDefault();
+                e.stopPropagation();
                 
-                // Reset back to original text after 2 seconds
-                setTimeout(() => {
-                    subtext.textContent = 'click to copy URL';
-                    copyBtn.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('Failed to copy: ', err);
-                subtext.textContent = 'Failed to copy. Try manual copy.';
+                // Hardcoded clean URL string to guarantee no HTML code is copied
+                const cleanIP = "://afkdadtvserver.com";
+                
+                // Force copy command to clipboard
+                navigator.clipboard.writeText(cleanIP).then(function() {
+                    // Update overlay text to show success prompt
+                    tooltip.textContent = 'Copied to Clipboard!';
+                    copyBtn.classList.add('copied');
+                    
+                    // Reset back to original hover message layout after 2 seconds
+                    setTimeout(function() {
+                        tooltip.textContent = 'Click to Copy URL';
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                }).catch(function(err) {
+                    console.error('Failed to copy text: ', err);
+                    tooltip.textContent = 'Failed to copy!';
+                });
             });
-        });
-    }
+        }
+    })();
 </script>
 
         </section>
