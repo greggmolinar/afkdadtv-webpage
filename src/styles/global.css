@@ -111,11 +111,8 @@ footer {
                  5px 0 15px var(--glow-right);
 }
 
-.title {
-    /* Uses a linear text gradient to transition text color from left red to right blue */
-    background: linear-gradient(to right, var(--accent-red), var(--accent-blue));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.tagline {
+    color: #ffffff; /* FIXED: Crisp Solid White text for absolute legibility */
     font-size: 0.95rem;
     font-weight: 700;
     text-transform: uppercase;
@@ -330,4 +327,6 @@ footer {
     font-size: 0.8rem;
     color: #ffffff; 
     opacity: 0.9;   
+}
+
 }
