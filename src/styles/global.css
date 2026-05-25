@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. BASE RESET & GLOBAL LAYOUT VARIABLES
+   1. BASE RESET & GLOBAL LAYOUT VARIABLES (RED & BLUE THEME)
    ========================================================================== */
 * {
     margin: 0;
@@ -13,8 +13,12 @@
     --card-bg: #1f2833;
     --text-main: #c5c6c7;
     --text-bright: #ffffff;
-    --accent-purple: #9146ff; /* Twitch Neon Purple */
-    --accent-glow: rgba(145, 70, 255, 0.4);
+    
+    /* Branding Variable Changes */
+    --accent-red: #ff3333;   /* Brand Left Red */
+    --accent-blue: #3399ff;  /* Brand Right Blue */
+    --glow-left: rgba(255, 51, 51, 0.4);
+    --glow-right: rgba(51, 153, 255, 0.4);
 }
 
 html, body {
@@ -35,7 +39,7 @@ body {
 }
 
 /* ==========================================================================
-   2. MAIN SITE CONTENT CONTAINER
+   2. MAIN SITE CONTENT CONTAINER (GRADIENT GLOW)
    ========================================================================== */
 .container {
     display: flex;
@@ -46,7 +50,11 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: 20px;
     padding: 40px 30px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 0 0 15px var(--accent-glow);
+    
+    /* Updated Box Shadow: Split glowing effect with red on left, blue on right */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
+                -8px 0 20px var(--glow-left), 
+                 8px 0 20px var(--glow-right);
     box-sizing: border-box;
     text-align: center;
 }
@@ -75,18 +83,31 @@ footer {
     width: 120px;
     height: 120px;
     border-radius: 50%;
-    border: 4px solid var(--accent-purple);
     object-fit: cover;
-    box-shadow: 0 0 20px var(--accent-purple);
+    
+    /* Dual logo border styling to flow red to blue smoothly */
+    border: 4px solid transparent;
+    background-image: linear-gradient(var(--card-bg), var(--card-bg)), 
+                      linear-gradient(to right, var(--accent-red), var(--accent-blue));
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    
+    /* Profile shadow glowing split layout */
+    box-shadow: -5px 0 15px var(--glow-left), 
+                 5px 0 15px var(--glow-right);
 }
 
 .tagline {
-    color: var(--accent-purple);
+    /* Uses a linear text gradient to transition text color from left red to right blue */
+    background: linear-gradient(to right, var(--accent-red), var(--accent-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
-    margin-top: 5px;
+    margin-top: 8px;
     letter-spacing: 2px;
+    display: inline-block;
 }
 
 /* Avatar Live-Indicator Dot Context */
@@ -101,16 +122,16 @@ footer {
     right: 5px;
     width: 18px;
     height: 18px;
-    background-color: transparent; /* Changed to transparent so it is hidden when offline */
-    border: 3px solid transparent;   /* Hidden by default */
+    background-color: transparent; 
+    border: 3px solid transparent;   
     border-radius: 50%;
     transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 /* Active Pulsing Live-Alert State */
 .live-dot.active-live {
-    background-color: #ff4a4a !important; /* Vibrant Live Red */
-    border-color: #151b24 !important;    /* Isolates dot layout boundary from avatar */
+    background-color: #ff4a4a !important; 
+    border-color: #151b24 !important;    
     box-shadow: 0 0 10px #ff4a4a, 0 0 20px #ff4a4a;
     animation: pulseGlow 2s infinite;
 }
@@ -140,7 +161,7 @@ footer {
 }
 
 .about-section p {
-    color: #ffffff; /* Crisp Solid White */
+    color: #ffffff; 
     font-size: 0.95rem;
     line-height: 1.6;
 }
@@ -200,7 +221,7 @@ footer {
 }
 
 .discord:hover {
-    background-color: #5865F2; /* Discord Blurple */
+    background-color: #5865F2; 
     box-shadow: 0 0 15px rgba(88, 101, 242, 0.6);
     transform: translateY(-2px);
 }
@@ -247,7 +268,7 @@ footer {
 .minecraft-card i {
     font-size: 1.4rem;
     width: 35px;
-    color: #55ff55; /* Minecraft Green Icon */
+    color: #55ff55; 
 }
 
 .minecraft-card .main-text {
@@ -263,7 +284,7 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #3c8527; /* Grass Block Green Overlay */
+    background-color: #3c8527; 
     color: #ffffff;
     display: flex;
     justify-content: center;
@@ -290,9 +311,9 @@ footer {
     width: 100%;
     margin-top: 40px;
     padding-top: 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Clean divider line */
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
     text-align: center;
     font-size: 0.8rem;
     color: #ffffff; 
-    opacity: 0.9;   /* Highly visible clarity */
+    opacity: 0.9;   
 }
