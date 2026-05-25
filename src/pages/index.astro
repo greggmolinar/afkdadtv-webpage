@@ -9,7 +9,16 @@ import '../styles/global.css';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AFKDadTv | Official Hub</title>
-    <!-- FontAwesome for Social Icons -->
+    
+    <!-- SEO & Rich Social Media Preview Cards (OpenGraph) -->
+    <meta name="description" content="Official hub for AFKDadTv. Streamer, Dad, Content Creator. Grab the Minecraft server IP, find my socials, and join the community!">
+    <meta property="og:title" content="AFKDadTv | Official Hub">
+    <meta property="og:description" content="Balancing Dad life and gaming. Catch live streams, view YouTube videos, and join the official server community!">
+    <meta property="og:image" content="/Logo.png">
+    <meta property="og:type" content="website">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Restored CDN for Social Icons (Replacing cloudflare placeholder) -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -18,11 +27,12 @@ import '../styles/global.css';
         <!-- Profile Header -->
         <header class="profile-header">
             <div class="logo-container">
-                <!-- If you have a logo image, put it in the /public folder and reference it as /logo.png -->
                 <img src="/Logo.png" alt="AFKDadTv Logo" class="profile-logo" onerror="this.src='https://placeholder.com'">
+                <!-- Live indicator dot that changes via script -->
+                <div class="live-dot" id="twitch-indicator"></div>
             </div>
             <h1>AFKDadTv</h1>
-            <p class="tagline">Streamer | Content Creator | Dad</p>
+            <p class="tagline" id="stream-status-text">Streamer | Content Creator | Dad</p>
         </header>
 
         <!-- About Section -->
@@ -35,15 +45,37 @@ import '../styles/global.css';
         <section class="links-section">
             <h2>Connect With Me</h2>
             
-            <a href="https://twitch.tv/afkdadtv" target="_blank" class="social-card twitch">
+            <a href="https://twitch.tv/afkdadtv" target="_blank" class="social-card twitch" id="twitch-link">
                 <i class="fab fa-twitch"></i>
-                <span>Twitch</span>
+                <div class="btn-text-wrapper">
+                    <span>Twitch</span>
+                    <span class="live-subtext" id="twitch-subtext">Check if I'm live!</span>
+                </div>
+            </a>
+
+            <!-- Integrated Discord Feature Card -->
+            <a href="https://discord.gg" target="_blank" class="social-card discord">
+                <i class="fab fa-discord"></i>
+                <span>Join the Discord</span>
             </a>
 
             <a href="https://youtube.com/@afkdadtv" target="_blank" class="social-card youtube">
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
+
+            <!-- Minecraft Server Copy Button (Cleaned up structural layout) -->
+            <button class="social-card minecraft-card" id="copy-mc-btn" data-ip="mc.afkdadserver.com">
+                <div class="btn-content">
+                    <i class="fas fa-cube"></i>
+                    <div class="text-group">
+                        <span class="main-text">Minecraft Server</span>
+                        <span class="sub-text" id="btn-subtext">mc.afkdadserver.com</span>
+                    </div>
+                </div>
+                <!-- Overlay message container -->
+                <div class="hover-tooltip" id="mc-tooltip">Click to Copy URL</div>
+            </button>
 
             <a href="https://instagram.com/afkdadtv" target="_blank" class="social-card instagram">
                 <i class="fab fa-instagram"></i>
@@ -54,26 +86,24 @@ import '../styles/global.css';
                 <i class="fab fa-facebook-f"></i>
                 <span>Facebook</span>
             </a>
-            <!-- Minecraft Server Copy Button -->
-<button class="social-card minecraft-card" id="copy-mc-btn" data-ip="mc.afkdadserver.com">
-    <div class="btn-content">
-        <i class="fas fa-cube"></i>
-        <div class="text-group">
-            <span class="main-text">Minecraft Server</span>
-            <span class="sub-text" id="btn-subtext">mc.afkdadserver.com</span>
-        </div>
-    </div>
-    <!-- Overlay message container -->
-    <div class="hover-tooltip" id="mc-tooltip">Click to Copy URL</div>
-</button>
+        </section>
 
-        </div>
+        <!-- Footer -->
+        <footer>
+            <p>&copy; 2026 AFKDadTv. All rights reserved.</p>
+        </footer>
     </div>
-</button>
+
+</body>
+</html>
+
+<!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
 <script is:inline>
     (function() {
+        // --- 1. MINECRAFT SERVER CLIPBOARD AUTOMATION ---
         const copyBtn = document.getElementById('copy-mc-btn');
         const tooltip = document.getElementById('mc-tooltip');
+        const mcSubtext = document.getElementById('btn-subtext');
 
         if (copyBtn && tooltip) {
             copyBtn.addEventListener('click', function(e) {
@@ -82,7 +112,6 @@ import '../styles/global.css';
                 
                 const cleanIP = "mc.afkdadserver.com";
 
-                // Function to handle the UI feedback transition
                 function showSuccess() {
                     tooltip.textContent = 'Copied to Clipboard!';
                     copyBtn.classList.add('copied');
@@ -92,7 +121,6 @@ import '../styles/global.css';
                     }, 2000);
                 }
 
-                // Apple/Safari Preferred Clipboard Pattern
                 if (navigator.clipboard && window.ClipboardItem) {
                     const item = new ClipboardItem({
                         "text/plain": Promise.resolve(cleanIP)
@@ -100,26 +128,23 @@ import '../styles/global.css';
                     navigator.clipboard.write([item]).then(function() {
                         showSuccess();
                     }).catch(function(err) {
-                        // Regular fallback if strict security rejects it
                         fallbackCopy(cleanIP);
                     });
                 } else {
                     fallbackCopy(cleanIP);
                 }
 
-                // Inline visual fallback for non-secure environments
                 function fallbackCopy(text) {
                     const textArea = document.createElement("textarea");
                     textArea.value = text;
-                    // iOS safari workaround: don't throw it completely offscreen
                     textArea.style.position = 'absolute';
                     textArea.style.opacity = '0';
-                    textArea.style.fontSize = '16px'; // Prevents iOS zoom on focus
+                    textArea.style.fontSize = '16px';
                     
                     document.body.appendChild(textArea);
                     textArea.focus();
                     textArea.select();
-                    textArea.setSelectionRange(0, 99999); // Force selection on mobile safari
+                    textArea.setSelectionRange(0, 99999);
                     
                     try {
                         const successful = document.execCommand('copy');
@@ -135,17 +160,36 @@ import '../styles/global.css';
                 }
             });
         }
+
+        // --- 2. DYNAMIC MINECRAFT PLAYER COUNTER API ---
+        const mcServerDomain = "mc.afkdadserver.com";
+        fetch(`https://mcsrvstat.us{mcServerDomain}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.online && mcSubtext) {
+                    const onlinePlayers = data.players.online || 0;
+                    const maxPlayers = data.players.max || 20;
+                    mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
+                    mcSubtext.style.color = "#55ff55";
+                }
+            })
+            .catch(() => console.log("Minecraft status lookup offline."));
+
+        // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
+        const twitchUser = "afkdadtv";
+        const indicator = document.getElementById('twitch-indicator');
+        const statusText = document.getElementById('stream-status-text');
+        const twitchSub = document.getElementById('twitch-subtext');
+
+        fetch(`https://twitch.tv{twitchUser}/live_status`, { mode: 'cors' })
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.live) {
+                    if (indicator) indicator.classList.add('active-live');
+                    if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
+                    if (twitchSub) twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                }
+            })
+            .catch(() => console.log("Twitch lookup skipped."));
     })();
 </script>
-
-
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>&copy; 2026 AFKDadTv. All rights reserved.</p>
-        </footer>
-    </div>
-
-</body>
-</html>
