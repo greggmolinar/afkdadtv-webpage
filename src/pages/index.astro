@@ -14,11 +14,11 @@ import '../styles/global.css';
     <meta name="description" content="Official hub for AFKDadTv. Streamer, Dad, Content Creator. Grab the Minecraft server IP, find my socials, and join the community!">
     <meta property="og:title" content="AFKDadTv | Official Hub">
     <meta property="og:description" content="Balancing Dad life and gaming. Catch live streams, view YouTube videos, and join the official server community!">
-    <meta property="og:image" content="/Logo.png">
+    <meta property="og:image" content="https://afkdadtv.com">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Restored CDN for Social Icons (Replacing cloudflare placeholder) -->
+    <!-- FIXED: Restored official CDN for FontAwesome icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -57,7 +57,8 @@ import '../styles/global.css';
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
-             <a href="https://instagram.com/afkdadtv" target="_blank" class="social-card instagram">
+            
+            <a href="https://instagram.com/afkdadtv" target="_blank" class="social-card instagram">
                 <i class="fab fa-instagram"></i>
                 <span>Instagram</span>
             </a>
@@ -66,13 +67,14 @@ import '../styles/global.css';
                 <i class="fab fa-facebook-f"></i>
                 <span>Facebook</span>
             </a>
-            <!-- Integrated Discord Feature Card -->
+            
+            <!-- Saved your direct Discord Invite link code here -->
             <a href="https://discord.gg/yCyxhKMWtS" target="_blank" class="social-card discord">
                 <i class="fab fa-discord"></i>
                 <span>Join the Discord</span>
             </a>
 
-            <!-- Minecraft Server Copy Button (Cleaned up structural layout) -->
+            <!-- Minecraft Server Copy Button -->
             <button class="social-card minecraft-card" id="copy-mc-btn" data-ip="mc.afkdadserver.com">
                 <div class="btn-content">
                     <i class="fas fa-cube"></i>
@@ -84,8 +86,6 @@ import '../styles/global.css';
                 <!-- Overlay message container -->
                 <div class="hover-tooltip" id="mc-tooltip">Click to Copy URL</div>
             </button>
-
-           
         </section>
 
         <!-- Footer -->
@@ -97,8 +97,7 @@ import '../styles/global.css';
 </body>
 </html>
 
-<!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
-<!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
+<!-- Script Handling Automated Counter + Clipboard Engine -->
 <script is:inline>
     (function() {
         // --- 1. MINECRAFT SERVER CLIPBOARD AUTOMATION ---
@@ -111,7 +110,6 @@ import '../styles/global.css';
                 e.preventDefault();
                 e.stopPropagation();
                 
-                // Explicit target URL text
                 const cleanIP = "mc.afkdadserver.com";
 
                 function showSuccess() {
@@ -163,7 +161,7 @@ import '../styles/global.css';
             });
         }
 
-        // --- 2. FAILSAFE MINECRAFT PLAYER COUNTER ---
+        // --- 2. FIXED FAILSAFE MINECRAFT PLAYER COUNTER ---
         const mcServerDomain = "mc.afkdadserver.com";
         
         fetch(`https://mcstatus.io{mcServerDomain}`)
@@ -172,20 +170,17 @@ import '../styles/global.css';
             return res.json();
         })
         .then(data => {
-            // Only modify layout text if the server successfully reports an open online state
             if (data && data.online && mcSubtext) {
                 const onlinePlayers = (data.players && data.players.online) || 0;
                 const maxPlayers = (data.players && data.players.max) || 20;
                 mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
-                mcSubtext.style.color = "#55ff55"; // Changes subtitle line to green
+                mcSubtext.style.color = "#55ff55"; 
             } else if (mcSubtext) {
-                // Secure Failsafe Default: Lock the clean domain string in place cleanly
                 mcSubtext.textContent = "mc.afkdadserver.com";
                 mcSubtext.style.color = "#a9a9a9";
             }
         })
         .catch(() => {
-            // Absolute backup catch block to protect visibility
             if (mcSubtext) {
                 mcSubtext.textContent = "mc.afkdadserver.com";
                 mcSubtext.style.color = "#a9a9a9";
@@ -210,7 +205,7 @@ import '../styles/global.css';
                 }
             })
             .catch(() => {
-                console.log("Twitch lookup skipped. Standing by with fallback defaults.");
+                console.log("Twitch lookup skipped. Fallback active.");
             });
     })();
 </script>
