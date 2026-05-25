@@ -217,3 +217,31 @@ footer {
 .minecraft-card.copied .hover-tooltip {
     background-color: #2e661e !important;
 }
+/* Layout Alignment Fixes */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    box-sizing: border-box;
+}
+
+/* Force sections to break lines and stack perfectly */
+.profile-header, 
+.about-section, 
+.links-section {
+    width: 100%;
+    clear: both;
+}
+
+/* Force footer to the bottom and span the full width */
+footer {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); /* Clean divider line */
+    text-align: center;
+    clear: both;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
