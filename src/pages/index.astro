@@ -81,3 +81,30 @@ import '../styles/global.css';
 
 </body>
 </html>
+<script>
+    const copyBtn = document.getElementById('copy-mc-btn');
+    const subtext = document.getElementById('btn-subtext');
+
+    if (copyBtn && subtext) {
+        copyBtn.addEventListener('click', () => {
+            // Get the IP from the data attribute
+            const ipAddress = copyBtn.getAttribute('data-ip') || '';
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(ipAddress).then(() => {
+                // Visual feedback success state
+                subtext.textContent = 'Copied to clipboard!';
+                copyBtn.classList.add('copied');
+                
+                // Reset back to original text after 2 seconds
+                setTimeout(() => {
+                    subtext.textContent = 'click to copy URL';
+                    copyBtn.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                subtext.textContent = 'Failed to copy. Try manual copy.';
+            });
+        });
+    }
+</script>
