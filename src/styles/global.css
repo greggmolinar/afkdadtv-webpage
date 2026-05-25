@@ -27,6 +27,20 @@ html, body {
     margin: 0;
     padding: 0;
     background-color: var(--bg-color);
+    
+    /* 
+       DYNAMIC BRAND GLOW MASK:
+       Blends a left-red and right-blue neon ambient glow directly over 
+       the custom abstract scratch texture image asset you uploaded.
+    */
+    background-image: 
+        linear-gradient(to right, rgba(255, 51, 51, 0.22), rgba(11, 12, 16, 0.5) 25%, rgba(11, 12, 16, 0.5) 75%, rgba(51, 153, 255, 0.22)),
+        url('/carbon-bg.png');
+        
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Securely locks the texture static while scrolling on iPad */
+    background-repeat: no-repeat;
 }
 
 body {
@@ -97,7 +111,7 @@ footer {
                  5px 0 15px var(--glow-right);
 }
 
-.tagline {
+.title {
     /* Uses a linear text gradient to transition text color from left red to right blue */
     background: linear-gradient(to right, var(--accent-red), var(--accent-blue));
     -webkit-background-clip: text;
