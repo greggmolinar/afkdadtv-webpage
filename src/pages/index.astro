@@ -98,7 +98,7 @@ import '../styles/global.css';
 </html>
 
 <!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
-<script is:inline><!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
+<!-- Single Unified Script Handling Automated Counter + Clipboard Engine -->
 <script is:inline>
     (function() {
         // --- 1. MINECRAFT SERVER CLIPBOARD AUTOMATION ---
@@ -111,6 +111,7 @@ import '../styles/global.css';
                 e.preventDefault();
                 e.stopPropagation();
                 
+                // Explicit target URL text
                 const cleanIP = "mc.afkdadserver.com";
 
                 function showSuccess() {
@@ -162,30 +163,36 @@ import '../styles/global.css';
             });
         }
 
-        // --- 2. FIXED MINECRAFT PLAYER COUNTER API ---
+        // --- 2. FAILSAFE MINECRAFT PLAYER COUNTER ---
         const mcServerDomain = "mc.afkdadserver.com";
-        fetch(`https://mcsrvstat.us{mcServerDomain}`, {
-            headers: {
-                'User-Agent': 'AFKDadTv-Link-Hub/1.0 (Minecraft Server Status Checker)'
-            }
+        
+        fetch(`https://mcstatus.io{mcServerDomain}`)
+        .then(res => {
+            if (!res.ok) throw new Error('API down');
+            return res.json();
         })
-        .then(res => res.json())
         .then(data => {
+            // Only modify layout text if the server successfully reports an open online state
             if (data && data.online && mcSubtext) {
                 const onlinePlayers = (data.players && data.players.online) || 0;
                 const maxPlayers = (data.players && data.players.max) || 20;
                 mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
-                mcSubtext.style.color = "#55ff55";
+                mcSubtext.style.color = "#55ff55"; // Changes subtitle line to green
             } else if (mcSubtext) {
-                mcSubtext.textContent = "● Server Currently Offline";
-                mcSubtext.style.color = "#ff4a4a";
+                // Secure Failsafe Default: Lock the clean domain string in place cleanly
+                mcSubtext.textContent = "mc.afkdadserver.com";
+                mcSubtext.style.color = "#a9a9a9";
             }
         })
         .catch(() => {
-            if (mcSubtext) mcSubtext.textContent = "mc.afkdadserver.com";
+            // Absolute backup catch block to protect visibility
+            if (mcSubtext) {
+                mcSubtext.textContent = "mc.afkdadserver.com";
+                mcSubtext.style.color = "#a9a9a9";
+            }
         });
 
-        // --- 3. FIXED TWITCH CHANNEL LIVE STATUS VERIFIER ---
+        // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
         const twitchUser = "afkdadtv";
         const indicator = document.getElementById('twitch-indicator');
         const statusText = document.getElementById('stream-status-text');
