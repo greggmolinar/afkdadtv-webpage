@@ -18,7 +18,7 @@ import '../styles/global.css';
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- FIXED: Restored the true working global production CDN for your Icons -->
+    <!-- Official CDN for FontAwesome icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -45,31 +45,31 @@ import '../styles/global.css';
         <section class="links-section">
             <h2>Connect With Me</h2>
             
-            <a href="https://twitch.tv/afkdadtv" target="_blank" class="social-card twitch" id="twitch-link">
+            <a href="https://twitch.tv" target="_blank" class="social-card twitch" id="twitch-link">
                 <i class="fab fa-twitch"></i>
                 <div class="btn-text-wrapper">
                     <span>Twitch</span>
-                    <span class="live-subtext" id="twitch-subtext">Check if I'm live!</span>
+                    <span class="live-subtext" id="twitch-subtext">● Stream Currently Offline</span>
                 </div>
             </a>
 
-            <a href="https://youtube.com/@afkdadtv" target="_blank" class="social-card youtube">
+            <a href="https://youtube.com" target="_blank" class="social-card youtube">
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
             
-            <a href="https://instagram.com/afkdadtv" target="_blank" class="social-card instagram">
+            <a href="https://instagram.com" target="_blank" class="social-card instagram">
                 <i class="fab fa-instagram"></i>
                 <span>Instagram</span>
             </a>
 
-            <a href="https://facebook.com/afkdadtv" target="_blank" class="social-card facebook">
+            <a href="https://facebook.com" target="_blank" class="social-card facebook">
                 <i class="fab fa-facebook-f"></i>
                 <span>Facebook</span>
             </a>
             
             <!-- Saved your direct Discord Invite link code here -->
-            <a href="https://discord.gg/yCyxhKMWtS" target="_blank" class="social-card discord">
+            <a href="https://discord.gg" target="_blank" class="social-card discord">
                 <i class="fab fa-discord"></i>
                 <span>Join the Discord</span>
             </a>
@@ -164,7 +164,6 @@ import '../styles/global.css';
         // --- 2. FIXED FAILSAFE MINECRAFT PLAYER COUNTER ---
         const mcServerDomain = "mc.afkdadserver.com";
         
-        // FIXED API ENDPOINT: Routed explicitly through api.mcstatus.io processing paths
         fetch(`https://mcstatus.io{mcServerDomain}`)
         .then(res => {
             if (!res.ok) throw new Error('API down');
@@ -177,7 +176,6 @@ import '../styles/global.css';
                 mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
                 mcSubtext.style.color = "#55ff55"; 
             } else if (mcSubtext) {
-                // Displays perfect offline flag color state when server is down
                 mcSubtext.textContent = "● Server Currently Offline";
                 mcSubtext.style.color = "#ff4a4a";
             }
@@ -195,19 +193,25 @@ import '../styles/global.css';
         const statusText = document.getElementById('stream-status-text');
         const twitchSub = document.getElementById('twitch-subtext');
 
+        // Set baseline style behavior to bright notification red on layout startup
+        if (twitchSub) {
+            twitchSub.style.color = "#ff4a4a";
+        }
+
         fetch(`https://twitchtracker.com{twitchUser}`)
             .then(res => res.json())
             .then(data => {
                 if (data && data.is_live) {
                     if (indicator) indicator.classList.add('active-live');
                     if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
-                    if (twitchSub) twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
-                } else {
-                    if (twitchSub) twitchSub.textContent = "Check if I'm live!";
+                    if (twitchSub) {
+                        twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                        twitchSub.style.color = "#55ff55"; // Swap text over to green when live
+                    }
                 }
             })
             .catch(() => {
-                console.log("Twitch lookup skipped. Fallback active.");
+                console.log("Twitch lookup skipped. Fallback offline active.");
             });
     })();
 </script>
