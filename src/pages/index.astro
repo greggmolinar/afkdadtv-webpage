@@ -82,7 +82,7 @@ import '../styles/global.css';
                 e.stopPropagation();
                 
                 // Hardcoded clean URL string to guarantee no HTML code is copied
-                const cleanIP = "://afkdadtvserver.com";
+                const cleanIP = "mc.afkdadserver.com";
                 
                 // Force copy command to clipboard
                 navigator.clipboard.writeText(cleanIP).then(function() {
@@ -92,7 +92,7 @@ import '../styles/global.css';
                     
                     // Reset back to original hover message layout after 2 seconds
                     setTimeout(function() {
-                        tooltip.textContent = 'Click to Copy URL';
+                        tooltip.textContent = 'Link copied to clipboard';
                         copyBtn.classList.remove('copied');
                     }, 2000);
                 }).catch(function(err) {
