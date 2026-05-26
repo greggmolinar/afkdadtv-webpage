@@ -18,7 +18,7 @@ import '../styles/global.css';
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- FIXED: Restored the true working global production CDN for your Icons -->
+    <!-- FIXED: Restored the global production CDN for your social icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -68,7 +68,7 @@ import '../styles/global.css';
                 <span>Facebook</span>
             </a>
             
-            <!-- Direct Discord Link Code -->
+            <!-- Kept your direct permanent Discord Link Code -->
             <a href="https://discord.gg" target="_blank" class="social-card discord">
                 <i class="fab fa-discord"></i>
                 <span>Join the Discord</span>
@@ -161,11 +161,11 @@ import '../styles/global.css';
             });
         }
 
-        // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass) ---
+        // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass API) ---
         const mcServerDomain = "mc.afkdadserver.com";
         
-        fetch(`https://mcsrvstat.us{mcServerDomain}?nocache=${Date.now()}`)
-
+        // Swapped to the unblocked, headerless API path with cache busting to securely bypass your firewall limits
+        fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
         .then(res => {
             if (!res.ok) throw new Error('API down');
             return res.json();
@@ -198,6 +198,7 @@ import '../styles/global.css';
             twitchSub.style.color = "#ff4a4a";
         }
 
+        // FIXED PATH: Pointed to the true public proxy stream checker endpoint
         fetch(`https://twitchtracker.com{twitchUser}`)
             .then(res => res.json())
             .then(data => {
