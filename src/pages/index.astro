@@ -22,7 +22,7 @@ import '../styles/global.css';
     <link rel="icon" type="image/png" href="/Logo.png" />
 
     <!-- Official CDN for your social icons -->
-    <link rel="stylesheet" href="https://afkdadtv.com">
+    <link rel="stylesheet" href="/styles/global.css" />
 </head>
 <body>
 
@@ -179,7 +179,7 @@ import '../styles/global.css';
                 }
             });
 
-            // --- 3. HARDCODED TWITCH LIVE/OFFLINE CONTROLLER ---
+            // --- 3. HARDCODED TWITCH LIVE/OFFLINE CONTROLLER (DECAPI PATCH) ---
             const indicator = document.getElementById('twitch-indicator');
             const statusText = document.getElementById('stream-status-text');
             const twitchSub = document.getElementById('twitch-subtext');
@@ -189,26 +189,27 @@ import '../styles/global.css';
                 twitchSub.style.color = "#ff4a4a";
             }
 
-            // HARDCODED URL: Points directly to your static channel handle configuration string
-            fetch('https://streamlabs.club')
+            // Swapped tracking route to point to decapi's robust public uptime tracker node directly
+            fetch('https://decapi.me')
                 .then(res => {
                     if (!res.ok) throw new Error('API down');
-                    return res.json();
+                    return res.text();
                 })
-                .then(data => {
-                    if (data && data.is_live) {
+                .then(uptimeText => {
+                    // If the text response does NOT say offline, you are streaming live!
+                    if (uptimeText && !uptimeText.toLowerCase().includes('offline')) {
                         if (indicator) indicator.classList.add('active-live');
                         if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
                         if (twitchSub) {
-                            twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
-                            twitchSub.style.color = "#55ff55";
+                            twitchSub.textContent = `🔴 Live Now - Streaming for ${uptimeText}`;
+                            twitchSub.style.color = "#55ff55"; // Turns font green
                         }
                     } else {
                         if (indicator) indicator.classList.remove('active-live');
                         if (statusText) statusText.textContent = "Streamer | Content Creator | Dad";
                         if (twitchSub) {
                             twitchSub.textContent = "● Stream Currently Offline";
-                            twitchSub.style.color = "#ff4a4a";
+                            twitchSub.style.color = "#ff4a4a"; // Font stays red
                         }
                     }
                 })
