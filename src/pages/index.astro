@@ -175,7 +175,7 @@ import '../styles/global.css';
         if (!twitchSubtext) return;
         try {
             // FIXED: Fully fixed the URL formatting with /twitch/uptime/ and string variable tags
-            const response = await fetch(`https://decapi.me{twitchChannel}?_cache=${Date.now()}`);
+            const response = await fetch(`https://decapi.me/twitch/uptime/${twitchChannel}?_cache=${Date.now()}`);
             const data = await response.text();
 
             if (data.toLowerCase().includes("offline")) {
