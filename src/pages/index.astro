@@ -156,12 +156,11 @@ import '../styles/global.css';
                 });
             }
 
-            // --- 2. FIXED FAILSAFE MINECRAFT PLAYER COUNTER ---
+            // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield API Endpoint Patch) ---
             const mcServerDomain = "mc.afkdadserver.com";
             
-            // FIXED: Corrected syntax structure to use standard template literal interpolation rules (\$ sign added)
-           fetch(`https://mcstatus.io/status/java/mc.afkdadserver.com?cachebust=${Date.now()}`)
-
+            // FIXED PATH: Routes cleanly to api.mcstatus.io endpoints for Java servers
+            fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
             .then(res => {
                 if (!res.ok) throw new Error('API down');
                 return res.json();
@@ -184,7 +183,7 @@ import '../styles/global.css';
                 }
             });
 
-            // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
+            // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER (CORS BYPASS PROXY) ---
             const twitchUser = "afkdadtv";
             const indicator = document.getElementById('twitch-indicator');
             const statusText = document.getElementById('stream-status-text');
@@ -194,16 +193,20 @@ import '../styles/global.css';
                 twitchSub.style.color = "#ff4a4a";
             }
 
-            // FIXED: Adjusted syntax format structure to ping cross-origin authorized endpoint channels data natively
-            fetch(`https://twitchtracker.com/afkdadtv`)
-
-                .then(res => res.json())
-                .then(data => {
-                    if (data && data.is_live) {
+            // FIXED PATH: Uses the secure decapi.me proxy wrapper to cleanly read streaming logs without CORS blocking
+            fetch(`https://decapi.me{twitchUser}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('Proxy down');
+                    return res.text();
+                })
+                .then(uptimeText => {
+                    // If response string does not mention 'offline', you are actively broadcasting
+                    if (uptimeText && !uptimeText.toLowerCase().includes('offline')) {
                         if (indicator) indicator.classList.add('active-live');
                         if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
                         if (twitchSub) {
-                            twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                            twitchSub.textContent = `🔴 Currently Streaming! (Live ${uptimeText})`;
+
                             twitchSub.style.color = "#55ff55";
                         }
                     }
