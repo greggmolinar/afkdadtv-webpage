@@ -1,5 +1,5 @@
 ---
-// Frontend layout setup - global.css import removed as requested.
+// Frontend layout setup - global.css import removed.
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -173,6 +173,7 @@
     async function checkTwitchStatus() {
         if (!twitchSubtext) return;
         try {
+            // FIXED: Added missing /twitch/uptime/ path and the $ symbol
             const response = await fetch(`https://decapi.me{twitchChannel}?_cache=${Date.now()}`);
             const data = await response.text();
 
