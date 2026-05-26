@@ -160,7 +160,7 @@ import '../styles/global.css';
             const mcServerDomain = "mc.afkdadserver.com";
             
             // FIXED PATH: Routes cleanly to api.mcstatus.io endpoints for Java servers
-            fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
+            fetch(`https://mcstatus.io/status/java/mc.afkdadserver.com?cachebust=${Date.now()}`)
             .then(res => {
                 if (!res.ok) throw new Error('API down');
                 return res.json();
@@ -194,7 +194,7 @@ import '../styles/global.css';
             }
 
             // FIXED PATH: Uses the secure decapi.me proxy wrapper to cleanly read streaming logs without CORS blocking
-            fetch(`https://decapi.me{twitchUser}`)
+            fetch(`https://decapi.me/twitch/status/afkdadtv`)
                 .then(res => {
                     if (!res.ok) throw new Error('Proxy down');
                     return res.text();
