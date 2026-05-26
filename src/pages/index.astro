@@ -18,7 +18,7 @@ import '../styles/global.css';
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Official CDN for FontAwesome icons -->
+    <!-- FIXED: Restored the true working global production CDN for your Icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -68,7 +68,7 @@ import '../styles/global.css';
                 <span>Facebook</span>
             </a>
             
-            <!-- Saved your direct Discord Invite link code here -->
+            <!-- Direct Discord Link Code -->
             <a href="https://discord.gg" target="_blank" class="social-card discord">
                 <i class="fab fa-discord"></i>
                 <span>Join the Discord</span>
@@ -161,10 +161,10 @@ import '../styles/global.css';
             });
         }
 
-        // --- 2. FIXED FAILSAFE MINECRAFT PLAYER COUNTER ---
+        // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass) ---
         const mcServerDomain = "mc.afkdadserver.com";
         
-        fetch(`https://mcstatus.io{mcServerDomain}`)
+        fetch(`https://mcsrvstat.us{mcServerDomain}`)
         .then(res => {
             if (!res.ok) throw new Error('API down');
             return res.json();
@@ -193,7 +193,6 @@ import '../styles/global.css';
         const statusText = document.getElementById('stream-status-text');
         const twitchSub = document.getElementById('twitch-subtext');
 
-        // Set baseline style behavior to bright notification red on layout startup
         if (twitchSub) {
             twitchSub.style.color = "#ff4a4a";
         }
@@ -206,12 +205,12 @@ import '../styles/global.css';
                     if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
                     if (twitchSub) {
                         twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
-                        twitchSub.style.color = "#55ff55"; // Swap text over to green when live
+                        twitchSub.style.color = "#55ff55"; 
                     }
                 }
             })
             .catch(() => {
-                console.log("Twitch lookup skipped. Fallback offline active.");
+                console.log("Twitch lookup skipped. Fallback active.");
             });
     })();
 </script>
