@@ -14,15 +14,15 @@ import '../styles/global.css';
     <meta name="description" content="Official hub for AFKDadTv. Streamer, Dad, Content Creator. Grab the Minecraft server IP, find my socials, and join the community!">
     <meta property="og:title" content="AFKDadTv | Official Hub">
     <meta property="og:description" content="Balancing Dad life and gaming. Catch live streams, view YouTube videos, and join the official server community!">
-    <meta property="og:image" content="afkdadtv.com">
+    <meta property="og:image" content="https://afkdadtv.com">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
-   
-<!-- Browser Tab Bar Icon (Favicon) -->
-<link rel="icon" type="image/png" href="/Logo.png" />
+
+    <!-- Browser Tab Bar Icon (Favicon) -->
+    <link rel="icon" type="image/png" href="/Logo.png" />
 
     <!-- FIXED: Restored the global production CDN for your social icons -->
-    <link rel="stylesheet" href="https://afkdadtv.com">
+    <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
 
@@ -97,125 +97,117 @@ import '../styles/global.css';
         </footer>
     </div>
 
-</body>
-</html>
+    <!-- Script Handling Automated Counter + Clipboard Engine -->
+    <script is:inline>
+        (function() {
+            // --- 1. MINECRAFT SERVER CLIPBOARD AUTOMATION ---
+            const copyBtn = document.getElementById('copy-mc-btn');
+            const tooltip = document.getElementById('mc-tooltip');
+            const mcSubtext = document.getElementById('btn-subtext');
 
-<!-- Script Handling Automated Counter + Clipboard Engine -->
-<script is:inline>
-    (function() {
-        // --- 1. MINECRAFT SERVER CLIPBOARD AUTOMATION ---
-        const copyBtn = document.getElementById('copy-mc-btn');
-        const tooltip = document.getElementById('mc-tooltip');
-        const mcSubtext = document.getElementById('btn-subtext');
+            if (copyBtn && tooltip) {
+                copyBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const cleanIP = "mc.afkdadserver.com";
 
-        if (copyBtn && tooltip) {
-            copyBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                e.stopPropagation();
-                
-                const cleanIP = "mc.afkdadserver.com";
+                    function showSuccess() {
+                        tooltip.textContent = 'Copied to Clipboard!';
+                        copyBtn.classList.add('copied');
+                        setTimeout(function() {
+                            tooltip.textContent = 'Click to Copy URL';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    }
 
-                function showSuccess() {
-                    tooltip.textContent = 'Copied to Clipboard!';
-                    copyBtn.classList.add('copied');
-                    setTimeout(function() {
-                        tooltip.textContent = 'Click to Copy URL';
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                }
-
-                if (navigator.clipboard && window.ClipboardItem) {
-                    const item = new ClipboardItem({
-                        "text/plain": Promise.resolve(cleanIP)
-                    });
-                    navigator.clipboard.write([item]).then(function() {
-                        showSuccess();
-                    }).catch(function(err) {
-                        fallbackCopy(cleanIP);
-                    });
-                } else {
-                    fallbackCopy(cleanIP);
-                }
-
-                function fallbackCopy(text) {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = text;
-                    textArea.style.position = 'absolute';
-                    textArea.style.opacity = '0';
-                    textArea.style.fontSize = '16px';
-                    
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    textArea.setSelectionRange(0, 99999);
-                    
-                    try {
-                        const successful = document.execCommand('copy');
-                        if (successful) {
+                    if (navigator.clipboard && window.ClipboardItem) {
+                        const item = new ClipboardItem({ "text/plain": Promise.resolve(cleanIP) });
+                        navigator.clipboard.write([item]).then(function() {
                             showSuccess();
-                        } else {
-                            tooltip.textContent = 'Tap to select text';
+                        }).catch(function(err) {
+                            fallbackCopy(cleanIP);
+                        });
+                    } else {
+                        fallbackCopy(cleanIP);
+                    }
+
+                    function fallbackCopy(text) {
+                        const textArea = document.createElement("textarea");
+                        textArea.value = text;
+                        textArea.style.position = 'absolute';
+                        textArea.style.opacity = '0';
+                        textArea.style.fontSize = '16px';
+                        document.body.appendChild(textArea);
+                        textArea.focus();
+                        textArea.select();
+                        textArea.setSelectionRange(0, 99999);
+                        try {
+                            const successful = document.execCommand('copy');
+                            if (successful) {
+                                showSuccess();
+                            } else {
+                                tooltip.textContent = 'Tap to select text';
+                            }
+                        } catch (err) {
+                            tooltip.textContent = 'Not supported!';
                         }
-                    } catch (err) {
-                        tooltip.textContent = 'Not supported!';
+                        document.body.removeChild(textArea);
                     }
-                    document.body.removeChild(textArea);
-                }
-            });
-        }
-
-        // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass API) ---
-        const mcServerDomain = "mc.afkdadserver.com";
-        
-        // Swapped to the unblocked, headerless API path with cache busting to securely bypass your firewall limits
-        fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
-        .then(res => {
-            if (!res.ok) throw new Error('API down');
-            return res.json();
-        })
-        .then(data => {
-            if (data && data.online && mcSubtext) {
-                const onlinePlayers = (data.players && data.players.online) || 0;
-                const maxPlayers = (data.players && data.players.max) || 20;
-                mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
-                mcSubtext.style.color = "#55ff55"; 
-            } else if (mcSubtext) {
-                mcSubtext.textContent = "● Server Currently Offline";
-                mcSubtext.style.color = "#ff4a4a";
+                });
             }
-        })
-        .catch(() => {
-            if (mcSubtext) {
-                mcSubtext.textContent = "● Server Currently Offline";
-                mcSubtext.style.color = "#ff4a4a";
-            }
-        });
 
-        // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
-        const twitchUser = "afkdadtv";
-        const indicator = document.getElementById('twitch-indicator');
-        const statusText = document.getElementById('stream-status-text');
-        const twitchSub = document.getElementById('twitch-subtext');
-
-        if (twitchSub) {
-            twitchSub.style.color = "#ff4a4a";
-        }
-
-        // FIXED PATH: Pointed to the true public proxy stream checker endpoint
-        fetch(`https://twitchtracker.com{twitchUser}`)
-            .then(res => res.json())
+            // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass API) ---
+            const mcServerDomain = "mc.afkdadserver.com";
+            
+            fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
+            .then(res => {
+                if (!res.ok) throw new Error('API down');
+                return res.json();
+            })
             .then(data => {
-                if (data && data.is_live) {
-                    if (indicator) indicator.classList.add('active-live');
-                    if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
-                    if (twitchSub) {
-                        twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
-                        twitchSub.style.color = "#55ff55"; 
-                    }
+                if (data && data.online && mcSubtext) {
+                    const onlinePlayers = (data.players && data.players.online) || 0;
+                    const maxPlayers = (data.players && data.players.max) || 20;
+                    mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
+                    mcSubtext.style.color = "#55ff55";
+                } else if (mcSubtext) {
+                    mcSubtext.textContent = "● Server Currently Offline";
+                    mcSubtext.style.color = "#ff4a4a";
                 }
             })
             .catch(() => {
-                console.log("Twitch lookup skipped. Fallback active.");
+                if (mcSubtext) {
+                    mcSubtext.textContent = "● Server Currently Offline";
+                    mcSubtext.style.color = "#ff4a4a";
+                }
             });
-    })();
-</script>
+
+            // --- 3. TWITCH CHANNEL LIVE STATUS VERIFIER ---
+            const twitchUser = "afkdadtv";
+            const indicator = document.getElementById('twitch-indicator');
+            const statusText = document.getElementById('stream-status-text');
+            const twitchSub = document.getElementById('twitch-subtext');
+
+            if (twitchSub) {
+                twitchSub.style.color = "#ff4a4a";
+            }
+
+            fetch(`https://twitchtracker.com{twitchUser}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && data.is_live) {
+                        if (indicator) indicator.classList.add('active-live');
+                        if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
+                        if (twitchSub) {
+                            twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                            twitchSub.style.color = "#55ff55";
+                        }
+                    }
+                })
+                .catch(() => {
+                    console.log("Twitch lookup skipped. Fallback active.");
+                });
+        })();
+    </script>
+</body>
+</html>
