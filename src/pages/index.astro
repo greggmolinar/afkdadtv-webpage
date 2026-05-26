@@ -178,11 +178,10 @@
 
             if (data.toLowerCase().includes("offline")) {
                 twitchSubtext.textContent = "● Stream Currently Offline";
-                twitchSubtext.style.color = "#ff4a4a"; // Bright red
+                twitchSubtext.style.color = "#ff4a4a";
             } else {
-                // If it isn't offline, DecAPI outputs the active stream length text
                 twitchSubtext.textContent = `● Live Now! (${data})`;
-                twitchSubtext.style.color = "#55ff55"; // Bright green
+                twitchSubtext.style.color = "#55ff55";
             }
         } catch (error) {
             console.error("Failed to fetch stream status:", error);
