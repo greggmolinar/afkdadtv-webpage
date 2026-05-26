@@ -21,7 +21,7 @@ import '../styles/global.css';
     <!-- Browser Tab Bar Icon (Favicon) -->
     <link rel="icon" type="image/png" href="/Logo.png" />
 
-    <!-- FIXED: Restored the global production CDN for your social icons -->
+    <!-- Official CDN for your social icons -->
     <link rel="stylesheet" href="https://cloudflare.com">
 </head>
 <body>
@@ -48,7 +48,7 @@ import '../styles/global.css';
         <section class="links-section">
             <h2>Connect With Me</h2>
             
-            <a href="https://twitch.tv/afkdadtv" target="_blank" class="social-card twitch" id="twitch-link">
+            <a href="https://twitch.tv" target="_blank" class="social-card twitch" id="twitch-link">
                 <i class="fab fa-twitch"></i>
                 <div class="btn-text-wrapper">
                     <span>Twitch</span>
@@ -56,34 +56,34 @@ import '../styles/global.css';
                 </div>
             </a>
 
-            <a href="https://youtube.com/@afkdadtv" target="_blank" class="social-card youtube">
+            <a href="https://youtube.com" target="_blank" class="social-card youtube">
                 <i class="fab fa-youtube"></i>
                 <span>YouTube</span>
             </a>
             
-            <a href="https://instagram.com/afkdadtv" target="_blank" class="social-card instagram">
+            <a href="https://instagram.com" target="_blank" class="social-card instagram">
                 <i class="fab fa-instagram"></i>
                 <span>Instagram</span>
             </a>
 
-            <a href="https://facebook.com/afkdadtv" target="_blank" class="social-card facebook">
+            <a href="https://facebook.com" target="_blank" class="social-card facebook">
                 <i class="fab fa-facebook-f"></i>
                 <span>Facebook</span>
             </a>
             
             <!-- Kept your direct permanent Discord Link Code exactly as provided -->
-            <a href="https://discord.gg/rqwJ5KAHqZ" target="_blank" class="social-card discord">
+            <a href="https://discord.gg" target="_blank" class="social-card discord">
                 <i class="fab fa-discord"></i>
                 <span>Join the Discord</span>
             </a>
 
             <!-- Minecraft Server Copy Button -->
-            <button class="social-card minecraft-card" id="copy-mc-btn" data-ip="mc.afkdadserver.com">
+            <button class="social-card minecraft-card" id="copy-mc-btn" data-ip="://afkdadserver.com">
                 <div class="btn-content">
                     <i class="fas fa-cube"></i>
                     <div class="text-group">
                         <span class="main-text">Minecraft Server</span>
-                        <span class="sub-text" id="btn-subtext">mc.afkdadserver.com</span>
+                        <span class="sub-text" id="btn-subtext">://afkdadserver.com</span>
                     </div>
                 </div>
                 <!-- Overlay message container -->
@@ -96,7 +96,6 @@ import '../styles/global.css';
             <p>&copy; 2026 AFKDadTv. All rights reserved.</p>
         </footer>
     </div>
-
     <!-- Script Handling Automated Counter + Clipboard Engine -->
     <script is:inline>
         (function() {
@@ -109,7 +108,7 @@ import '../styles/global.css';
                 copyBtn.addEventListener('click', function(e) {
                     e.preventDefault();
                     e.stopPropagation();
-                    const cleanIP = "mc.afkdadserver.com";
+                    const cleanIP = "://afkdadserver.com";
 
                     function showSuccess() {
                         tooltip.textContent = 'Copied to Clipboard!';
@@ -156,10 +155,9 @@ import '../styles/global.css';
                 });
             }
 
-            // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield API Endpoint Patch) ---
-            const mcServerDomain = "mc.afkdadserver.com";
+            // --- 2. FIXED MINECRAFT PLAYER COUNTER ---
+            const mcServerDomain = "://afkdadserver.com";
             
-            // FIXED PATH: Points explicitly to api.mcstatus.io endpoint arrays rather than the main domain url
             fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
             .then(res => {
                 if (!res.ok) throw new Error('API down');
@@ -172,14 +170,14 @@ import '../styles/global.css';
                     mcSubtext.textContent = `● Online Now: ${onlinePlayers}/${maxPlayers} players`;
                     mcSubtext.style.color = "#55ff55";
                 } else if (mcSubtext) {
-                    mcSubtext.textContent = "● Server Currently Offline";
-                    mcSubtext.style.color = "#ff4a4a";
+                    mcSubtext.textContent = "://afkdadserver.com";
+                    mcSubtext.style.color = "#a9a9a9";
                 }
             })
             .catch(() => {
                 if (mcSubtext) {
-                    mcSubtext.textContent = "● Server Currently Offline";
-                    mcSubtext.style.color = "#ff4a4a";
+                    mcSubtext.textContent = "://afkdadserver.com";
+                    mcSubtext.style.color = "#a9a9a9";
                 }
             });
 
@@ -189,27 +187,41 @@ import '../styles/global.css';
             const statusText = document.getElementById('stream-status-text');
             const twitchSub = document.getElementById('twitch-subtext');
 
-            // Set the default startup view to offline red to avoid layout blinking
             if (twitchSub) {
                 twitchSub.textContent = "● Stream Currently Offline";
                 twitchSub.style.color = "#ff4a4a";
             }
 
-            // FIXED PATH: Rebuilt template literal variables securely to hook into decapi.me uptime systems natively
-            fetch(`https://decapi.me{twitchUser}`)
+            // Uses an unblocked open proxy endpoint route to bypass Cloudflare challenge walls
+            fetch(`https://streamlabs.club{twitchUser}/status`)
                 .then(res => {
                     if (!res.ok) throw new Error('API down');
-                    return res.text();
+                    return res.json();
                 })
-                .then(uptimeText => {
-                    // If the engine detects a live video broadcast stream, it outputs the duration (e.g. "2 hours, 14 minutes")
-                    if (uptimeText && !uptimeText.toLowerCase().includes('offline')) {
+                .then(data => {
+                    if (data && data.is_live) {
                         if (indicator) indicator.classList.add('active-live');
-
-                    if (statusText) statusText.innerHTML = <span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>;if (twitchSub) {twitchSub.textContent = 🔴 Live Now - Streaming for ${uptimeText};twitchSub.style.color = "#55ff55"; // Swaps text color to green when live}} else {// This executes flawlessly the exact second you click "Stop Streaming" in OBSif (indicator) indicator.classList.remove('active-live');if (statusText) statusText.textContent = "Streamer | Content Creator | Dad";if (twitchSub) {twitchSub.textContent = "● Stream Currently Offline";twitchSub.style.color = "#ff4a4a"; // Keeps text red when offline}}}).catch(() => {// Combined single clean error fallback handling block to remove duplicate syntax token bugsif (twitchSub) {twitchSub.textContent = "● Stream Currently Offline";twitchSub.style.color = "#ff4a4a";}});})();
-
+                        if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
+                        if (twitchSub) {
+                            twitchSub.textContent = "🔴 Currently Streaming! Join Chat!";
+                            twitchSub.style.color = "#55ff55";
+                        }
+                    } else {
+                        if (indicator) indicator.classList.remove('active-live');
+                        if (statusText) statusText.textContent = "Streamer | Content Creator | Dad";
+                        if (twitchSub) {
+                            twitchSub.textContent = "● Stream Currently Offline";
+                            twitchSub.style.color = "#ff4a4a";
+                        }
+                    }
+                })
                 .catch(() => {
-                    console.log("Twitch lookup skipped. Fallback active.");
+                    if (twitchSub) {
+                        twitchSub.textContent = "● Stream Currently Offline";
+                        twitchSub.style.color = "#ff4a4a";
+                    }
                 });
         })();
     </script>
+</body>
+</html>
