@@ -190,7 +190,7 @@ import '../styles/global.css';
             }
 
             // Swapped tracking route to point to decapi's robust public uptime tracker node directly
-            fetch('https://decapi.me')
+            fetch('https://decapi.me/twitch/uptime/afkdadtv')
                 .then(res => {
                     if (!res.ok) throw new Error('API down');
                     return res.text();
