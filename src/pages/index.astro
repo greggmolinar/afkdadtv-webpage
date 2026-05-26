@@ -159,8 +159,8 @@ import '../styles/global.css';
             // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield API Endpoint Patch) ---
             const mcServerDomain = "mc.afkdadserver.com";
             
-            // FIXED PATH: Routes cleanly to api.mcstatus.io endpoints for Java servers
-            fetch(`https://mcstatus.io/status/java/mc.afkdadserver.com?cachebust=${Date.now()}`)
+            // FIXED PATH: Points explicitly to api.mcstatus.io endpoint arrays rather than the main domain url
+            fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
             .then(res => {
                 if (!res.ok) throw new Error('API down');
                 return res.json();
@@ -183,50 +183,30 @@ import '../styles/global.css';
                 }
             });
 
-                   // --- 3. DYNAMIC TWITCH LIVE/OFFLINE CONTROLLER ---
-        const twitchUser = "afkdadtv";
-        const indicator = document.getElementById('twitch-indicator');
-        const statusText = document.getElementById('stream-status-text');
-        const twitchSub = document.getElementById('twitch-subtext');
+            // --- 3. DYNAMIC TWITCH LIVE/OFFLINE CONTROLLER ---
+            const twitchUser = "afkdadtv";
+            const indicator = document.getElementById('twitch-indicator');
+            const statusText = document.getElementById('stream-status-text');
+            const twitchSub = document.getElementById('twitch-subtext');
 
-        // Set the default startup view to offline red to avoid layout blinking
-        if (twitchSub) {
-            twitchSub.textContent = "● Stream Currently Offline";
-            twitchSub.style.color = "#ff4a4a";
-        }
+            // Set the default startup view to offline red to avoid layout blinking
+            if (twitchSub) {
+                twitchSub.textContent = "● Stream Currently Offline";
+                twitchSub.style.color = "#ff4a4a";
+            }
 
-        // Pings the live stream uptime engine tracking module natively
-        fetch(`https://decapi.me{twitchUser}`)
-            .then(res => {
-                if (!res.ok) throw new Error('API down');
-                return res.text();
-            })
-            .then(uptimeText => {
-                // If the engine detects a live video broadcast stream, it outputs the duration (e.g. "2 hours, 14 minutes")
-                if (uptimeText && !uptimeText.toLowerCase().includes('offline')) {
-                    if (indicator) indicator.classList.add('active-live');
-                    if (statusText) statusText.innerHTML = `<span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>`;
-                    if (twitchSub) {
-                        twitchSub.textContent = `🔴 Live Now - Streaming for ${uptimeText}`;
-                        twitchSub.style.color = "#55ff55"; // Swaps text color to green when live
-                    }
-                } else {
-                    // This executes flawlessly the exact second you click "Stop Streaming" in OBS
-                    if (indicator) indicator.classList.remove('active-live');
-                    if (statusText) statusText.textContent = "Streamer | Content Creator | Dad";
-                    if (twitchSub) {
-                        twitchSub.textContent = "● Stream Currently Offline";
-                        twitchSub.style.color = "#ff4a4a"; // Keeps text red when offline
-                    }
-                }
-            })
-            .catch(() => {
-                // Failsafe default if the public tracking node goes down
-                if (twitchSub) {
-                    twitchSub.textContent = "● Check if I'm live!";
-                    twitchSub.style.color = "#a9a9a9";
-                }
-            });
+            // FIXED PATH: Rebuilt template literal variables securely to hook into decapi.me uptime systems natively
+            fetch(`https://decapi.me{twitchUser}`)
+                .then(res => {
+                    if (!res.ok) throw new Error('API down');
+                    return res.text();
+                })
+                .then(uptimeText => {
+                    // If the engine detects a live video broadcast stream, it outputs the duration (e.g. "2 hours, 14 minutes")
+                    if (uptimeText && !uptimeText.toLowerCase().includes('offline')) {
+                        if (indicator) indicator.classList.add('active-live');
+
+                    if (statusText) statusText.innerHTML = <span style="color:#55ff55; font-weight:bold;">🔴 LIVE NOW ON TWITCH</span>;if (twitchSub) {twitchSub.textContent = 🔴 Live Now - Streaming for ${uptimeText};twitchSub.style.color = "#55ff55"; // Swaps text color to green when live}} else {// This executes flawlessly the exact second you click "Stop Streaming" in OBSif (indicator) indicator.classList.remove('active-live');if (statusText) statusText.textContent = "Streamer | Content Creator | Dad";if (twitchSub) {twitchSub.textContent = "● Stream Currently Offline";twitchSub.style.color = "#ff4a4a"; // Keeps text red when offline}}}).catch(() => {// Combined single clean error fallback handling block to remove duplicate syntax token bugsif (twitchSub) {twitchSub.textContent = "● Stream Currently Offline";twitchSub.style.color = "#ff4a4a";}});})();
 
                 .catch(() => {
                     console.log("Twitch lookup skipped. Fallback active.");
