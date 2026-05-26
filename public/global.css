@@ -1,0 +1,330 @@
+/* ==========================================================================
+   1. BASE RESET & GLOBAL LAYOUT VARIABLES (RED & BLUE THEME)
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+:root {
+    --bg-color: #0b0c10;
+    --card-bg: #1f2833;
+    --text-main: #c5c6c7;
+    --text-bright: #ffffff;
+    
+    /* Branding Variable Changes */
+    --accent-red: #ff3333;   /* Brand Left Red */
+    --accent-blue: #3399ff;  /* Brand Right Blue */
+    --glow-left: rgba(255, 51, 51, 0.4);
+    --glow-right: rgba(51, 153, 255, 0.4);
+}
+
+html, body {
+    width: 100%;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    
+    /* 
+       DYNAMIC BRAND GLOW MASK:
+       Blends a left-red and right-blue neon ambient glow directly over 
+       the custom abstract scratch texture image asset you uploaded.
+    */
+    background-image: 
+        linear-gradient(to right, rgba(255, 51, 51, 0.22), rgba(11, 12, 16, 0.5) 25%, rgba(11, 12, 16, 0.5) 75%, rgba(51, 153, 255, 0.22)),
+        url('/carbon-bg.png');
+        
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Securely locks the texture static while scrolling on iPad */
+    background-repeat: no-repeat;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Centers vertically */
+    align-items: center;     /* Centers horizontally */
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. MAIN SITE CONTENT CONTAINER (GRADIENT GLOW)
+   ========================================================================== */
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 550px;
+    background: linear-gradient(145deg, #151b24, #1f2833);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    padding: 40px 30px;
+    
+    /* Updated Box Shadow: Split glowing effect with red on left, blue on right */
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), 
+                -8px 0 20px var(--glow-left), 
+                 8px 0 20px var(--glow-right);
+    box-sizing: border-box;
+    text-align: center;
+}
+
+/* Force layout blocks to break lines cleanly and occupy full vertical width */
+.profile-header, 
+.about-section, 
+.links-section,
+footer {
+    width: 100%;
+    clear: both;
+}
+
+/* ==========================================================================
+   3. PROFILE HEADER & AVATAR SYSTEM 
+   ========================================================================== */
+.profile-header h1 {
+    color: var(--text-bright);
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-top: 15px;
+    letter-spacing: 1px;
+}
+
+.profile-logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    
+    /* Dual logo border styling to flow red to blue smoothly */
+    border: 4px solid transparent;
+    background-image: linear-gradient(var(--card-bg), var(--card-bg)), 
+                      linear-gradient(to right, var(--accent-red), var(--accent-blue));
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+    
+    /* Profile shadow glowing split layout */
+    box-shadow: -5px 0 15px var(--glow-left), 
+                 5px 0 15px var(--glow-right);
+}
+
+.tagline {
+    color: #ffffff; /* FIXED: Crisp Solid White text for absolute legibility */
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-top: 8px;
+    letter-spacing: 2px;
+    display: inline-block;
+}
+
+/* Avatar Live-Indicator Dot Context */
+.logo-container {
+    position: relative;
+    display: inline-block;
+}
+
+.live-dot {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 18px;
+    height: 18px;
+    background-color: transparent; 
+    border: 3px solid transparent;   
+    border-radius: 50%;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Active Pulsing Live-Alert State */
+.live-dot.active-live {
+    background-color: #ff4a4a !important; 
+    border-color: #151b24 !important;    
+    box-shadow: 0 0 10px #ff4a4a, 0 0 20px #ff4a4a;
+    animation: pulseGlow 2s infinite;
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0.7); }
+    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 74, 74, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 74, 74, 0); }
+}
+
+/* ==========================================================================
+   4. ABOUT INFORMATION SECTION
+   ========================================================================== */
+.about-section {
+    margin: 30px 0;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+}
+
+.about-section h2, .links-section h2 {
+    color: var(--text-bright);
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.about-section p {
+    color: #ffffff; 
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* ==========================================================================
+   5. INTERACTIVE BUTTON NAVIGATION CARDS
+   ========================================================================== */
+.links-section {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.social-card {
+    display: flex;
+    align-items: center;
+    padding: 16px 25px;
+    text-decoration: none;
+    color: var(--text-bright);
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.social-card i {
+    font-size: 1.4rem;
+    width: 35px;
+    text-align: left;
+}
+
+/* Subtext Column Configurations */
+.btn-text-wrapper, .text-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    line-height: 1.2;
+}
+
+.live-subtext, .minecraft-card .sub-text {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: #a9a9a9;
+    margin-top: 2px;
+    text-transform: none;
+    letter-spacing: 0px;
+}
+
+/* Hover Brand Modifications */
+.twitch:hover {
+    background-color: #6441a5;
+    box-shadow: 0 0 15px rgba(100, 65, 165, 0.6);
+    transform: translateY(-2px);
+}
+
+.discord:hover {
+    background-color: #5865F2; 
+    box-shadow: 0 0 15px rgba(88, 101, 242, 0.6);
+    transform: translateY(-2px);
+}
+
+.youtube:hover {
+    background-color: #ff0000;
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.instagram:hover {
+    background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+    box-shadow: 0 0 15px rgba(220, 39, 67, 0.6);
+    transform: translateY(-2px);
+}
+
+.facebook:hover {
+    background-color: #1877f2;
+    box-shadow: 0 0 15px rgba(24, 119, 242, 0.6);
+    transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   6. MINECRAFT INTERACTIVE COPY COMPONENT
+   ========================================================================== */
+.minecraft-card {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+}
+
+.btn-content {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.minecraft-card i {
+    font-size: 1.4rem;
+    width: 35px;
+    color: #55ff55; 
+}
+
+.minecraft-card .main-text {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+/* Tooltip Overlay */
+.hover-tooltip {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #3c8527; 
+    color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, background-color 0.2s ease;
+}
+
+.minecraft-card:hover .hover-tooltip {
+    opacity: 1;
+}
+
+.minecraft-card.copied .hover-tooltip {
+    background-color: #2e661e !important;
+}
+
+/* ==========================================================================
+   7. SITE FOOTER SETTINGS
+   ========================================================================== */
+footer {
+    width: 100%;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05); 
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ffffff; 
+    opacity: 0.9;   
+}
