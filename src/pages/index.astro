@@ -164,7 +164,8 @@ import '../styles/global.css';
         // --- 2. FIXED MINECRAFT PLAYER COUNTER (TCPShield/CORS Pass) ---
         const mcServerDomain = "mc.afkdadserver.com";
         
-        fetch(`https://mcsrvstat.us{mcServerDomain}`)
+        fetch(`https://mcsrvstat.us{mcServerDomain}?nocache=${Date.now()}`)
+
         .then(res => {
             if (!res.ok) throw new Error('API down');
             return res.json();
