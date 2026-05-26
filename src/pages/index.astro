@@ -160,7 +160,8 @@ import '../styles/global.css';
             const mcServerDomain = "mc.afkdadserver.com";
             
             // FIXED: Corrected syntax structure to use standard template literal interpolation rules (\$ sign added)
-            fetch(`https://mcstatus.io{mcServerDomain}?cachebust=${Date.now()}`)
+           fetch(`https://mcstatus.io/status/java/mc.afkdadserver.com?cachebust=${Date.now()}`)
+
             .then(res => {
                 if (!res.ok) throw new Error('API down');
                 return res.json();
@@ -194,7 +195,8 @@ import '../styles/global.css';
             }
 
             // FIXED: Adjusted syntax format structure to ping cross-origin authorized endpoint channels data natively
-            fetch(`https://twitchtracker.com{twitchUser}`)
+            fetch(`https://twitchtracker.com/afkdadtv`)
+
                 .then(res => res.json())
                 .then(data => {
                     if (data && data.is_live) {
